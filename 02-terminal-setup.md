@@ -4,7 +4,25 @@ A complete guide to setting up a polished, productive terminal environment on a 
 
 > **Prerequisite:** Complete the [System Preparation & Remote Access](01-system-preparation.md) guide first.
 
-## Step 1 — Homebrew
+## What to Install
+
+| Step | Tool | Level | Why |
+|------|------|-------|-----|
+| 1 | Homebrew | **Required** | Package manager — everything else installs through it |
+| 2 | iTerm2 | Recommended | Better terminal than the built-in Terminal.app |
+| 3 | Oh My Zsh | Recommended | Makes your shell easier to configure and extend |
+| 4 | Nerd Font | Optional | Icons for the terminal — only needed if using Powerlevel10k |
+| 5 | Powerlevel10k | Optional | A polished, informative prompt theme |
+| 6 | Plugins | Recommended | Autosuggestions and syntax highlighting as you type |
+| 7 | iTerm2 Configuration | Optional | Personal preference tweaks |
+| 8 | CLI Tools | Recommended | Modern replacements for common commands (`ls`, `cat`, `grep`) |
+| — | Dotfiles Backup | Optional | Version-control your config so you can restore it later |
+
+**New to this?** Do Steps 1, 2, 3, 6, and 8. Skip the rest until you're comfortable.
+
+---
+
+## Step 1 — Homebrew *(Required)*
 
 Homebrew is the foundation. Every other tool installs through it.
 
@@ -18,7 +36,7 @@ Follow the post-install instructions to add Homebrew to your PATH. On Apple Sili
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-## Step 2 — iTerm2
+## Step 2 — iTerm2 *(Recommended)*
 
 A more capable terminal emulator than the default Terminal.app, with split panes, profiles, and deep customization.
 
@@ -26,7 +44,7 @@ A more capable terminal emulator than the default Terminal.app, with split panes
 brew install --cask iterm2
 ```
 
-## Step 3 — Oh My Zsh
+## Step 3 — Oh My Zsh *(Recommended)*
 
 A framework for managing your zsh configuration with themes, plugins, and sensible defaults.
 
@@ -34,7 +52,7 @@ A framework for managing your zsh configuration with themes, plugins, and sensib
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-## Step 4 — Nerd Font
+## Step 4 — Nerd Font *(Optional — required only if using Powerlevel10k)*
 
 Nerd Fonts patch developer fonts with icons and glyphs needed by modern CLI tools and prompt themes.
 
@@ -48,7 +66,7 @@ After installing, configure iTerm2 to use it:
 2. Set the font to **MesloLGS Nerd Font**
 3. Recommended size: 13–14pt
 
-## Step 5 — Powerlevel10k Theme
+## Step 5 — Powerlevel10k Theme *(Optional)*
 
 A fast, highly configurable prompt theme for zsh that pairs perfectly with Oh My Zsh.
 
@@ -65,7 +83,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 Restart your shell and the Powerlevel10k configuration wizard will launch automatically, walking you through prompt styling options.
 
-## Step 6 — Plugins
+## Step 6 — Plugins *(Recommended)*
 
 ### External plugins (install first)
 
@@ -93,7 +111,7 @@ plugins=(git node npm docker zsh-autosuggestions zsh-syntax-highlighting z)
 
 The `z` plugin is built into Oh My Zsh and lets you jump to frequently used directories by typing partial names.
 
-## Step 7 — iTerm2 Configuration
+## Step 7 — iTerm2 Configuration *(Optional)*
 
 A few settings worth changing from the defaults:
 
@@ -102,7 +120,7 @@ A few settings worth changing from the defaults:
 - **Window appearance**: Settings → Profiles → Window → adjust transparency and blur to taste
 - **Color scheme**: Import a color scheme from [iterm2colorschemes.com](https://iterm2colorschemes.com). Popular choices include Catppuccin, Dracula, and Tokyo Night.
 
-## Step 8 — CLI Tools
+## Step 8 — CLI Tools *(Recommended)*
 
 Install the essential modern CLI replacements in one command:
 
@@ -143,7 +161,7 @@ After completing all the steps, reload your shell configuration:
 source ~/.zshrc
 ```
 
-## Dotfiles Backup
+## Dotfiles Backup *(Optional)*
 
 To make this setup reproducible, consider versioning your dotfiles with Git. A simple approach using a bare repository:
 
