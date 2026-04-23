@@ -22,6 +22,7 @@ Not sure which to pick? The guide has a comparison table and a recommendation fo
 |---|-------|-----------------|
 | 1 | [System Preparation & Remote Access](01-system-preparation.md) | Energy settings, auto-login, network, remote access (Luna Display, Jump Desktop, Tailscale) |
 | 2 | [Terminal Setup](02-terminal-setup.md) | Homebrew, iTerm2, Oh My Zsh, Powerlevel10k, plugins, modern CLI tools |
+| 3 | [OpenClaw Setup](03-openclaw-setup.md) | Node.js via nvm, OpenClaw daemon, OpenAI model, Telegram channel |
 
 ## Contributing
 
