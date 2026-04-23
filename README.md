@@ -1,4 +1,4 @@
-# Mac Dev Setup
+# Mac Mini Dev Setup
 
 A step-by-step guide to setting up a Mac Mini as a development machine you can control from your MacBook Pro — or sit at directly with a keyboard and mouse.
 
