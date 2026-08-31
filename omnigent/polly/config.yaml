@@ -12,18 +12,20 @@
 # agent-dev-kit ships with NO cost_budget on purpose (a $ cap is personal),
 # so this repo's cap has to live somewhere, and this file is that somewhere.
 #
-# agents/ and skills/ below are symlinks into the submodule (not vendored
-# copies) so THEY stay pinned to the submodule commit with zero drift risk.
-# Only this file's non-guardrails content can drift from upstream between
-# submodule bumps — re-sync it by diffing against
-# .agents/agent-dev-kit/config.yaml and re-applying the guardrails.policies
-# deltas below (cost_budget + diagnostic_tool_call_logger; everything else
-# should be a straight copy).
+# The sibling agents/ and skills/ directories are VENDORED COPIES of the
+# submodule's, not symlinks — see omnigent/README.md's "Why polly/agents/
+# and polly/skills/ are vendored copies, not symlinks" for why a symlink
+# approach was tried first and found to break interactive `omnigent run`
+# entirely (Omnigent's own directory-bundling code doesn't follow symlinked
+# subdirectories, confirmed 2026-08-31). All three (this file's
+# non-guardrails content, agents/, skills/) can drift from upstream between
+# submodule bumps — re-sync per omnigent/README.md's "Re-syncing after a
+# submodule bump" section.
 #
-# TODO: this manual re-sync is a real drift risk (nothing catches this file
+# TODO: this manual re-sync is a real drift risk (nothing catches these
 # silently falling behind the submodule between bumps). Worth a CI check
-# that diffs this file against .agents/agent-dev-kit/config.yaml with the
-# guardrails.policies deltas normalized out, failing on any other
+# that diffs this file (guardrails.policies deltas normalized out) plus
+# agents/ and skills/ against the submodule, failing on any unexpected
 # difference — not built yet.
 
 spec_version: 1
