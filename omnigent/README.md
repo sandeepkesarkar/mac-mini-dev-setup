@@ -108,6 +108,59 @@ bumps — worth a CI check that diffs all three (`config.yaml` guardrails
 normalized out, `agents/`, `skills/`) against the submodule and fails on
 any unexpected difference.
 
+## Launching from a multi-repo parent folder
+
+If `agent-dev-kit`, `dev-infrastructure`, and one or more product repos
+(e.g. `fieldkit`) live as siblings under one workspace folder, that parent
+folder is not itself a git repo — it has no `.agents/`, no submodule, and
+Omnigent's own global config (`~/.omnigent/config.yaml`) has no
+`default_agent` set by default. Launching bare `omnigent` from there with
+no setup falls back to Omnigent's own generic, shipped example agent —
+none of the three repos' actual bundles — and its `agents/` roster won't
+match anything you dispatch to.
+
+To make the parent folder default to this repo's bundle instead, create
+`<parent>/.omnigent/config.yaml` (machine-local; the parent isn't a repo,
+so nothing here is git-tracked) with:
+
+```yaml
+default_agent: /absolute/path/to/dev-infrastructure/omnigent/polly
+```
+
+Two non-obvious requirements, both confirmed 2026-08-31 by tracing real
+launch failures against the installed Omnigent CLI source (not guessed):
+
+- **Must be an absolute path.** A relative path (e.g.
+  `dev-infrastructure/omnigent/polly/config.yaml`) is resolved against
+  whichever process's current working directory happens to read it — the
+  CLI client resolves it fine, but the background Omnigent **server**
+  process (which can have started from an entirely different directory,
+  possibly days earlier) resolves the same relative path against its own
+  cwd instead, silently failing to find the file and falling back to the
+  generic built-in agent with no error pointing at the real cause.
+- **Must be the bundle ROOT DIRECTORY, not a path to `config.yaml`
+  itself.** `omnigent.spec.parser.parse()` expects a directory containing
+  `config.yaml` (plus `agents/`/`skills/`) and looks for
+  `<dir>/config.yaml` inside it; handing it the file path directly raises
+  `FileNotFoundError` in isolation, and empirically routes the real CLI
+  into a different code path that never resolves the sibling `agents/`
+  directory at all — producing the exact same "no sub-agent under agents/
+  declares that name" error the symlink bug above produces, for an
+  unrelated reason. `fieldkit`'s own `.omnigent/config.yaml` already gets
+  this right (`default_agent: .agents/agent-dev-kit`, a directory) — match
+  that shape here too.
+
+**A background server won't pick up a new `PYTHONPATH` (or any other env
+var) just by re-running `omni server --background`.** That command reuses
+a healthy already-running server silently ("Background server already
+running") rather than restarting it — confirmed 2026-08-31 while trying to
+make `polly_policies` (see `guardrails.policies.diagnostic_tool_call_logger`
+in `polly/config.yaml`) importable. If a guardrail policy needs
+`PYTHONPATH` to resolve a dotted `function.path`, changing that env var
+requires an explicit `omni server stop` first, then a fresh
+`PYTHONPATH=... omni server --background` — restarting stops every live
+session on the machine, so treat it as disruptive, not routine.
+
 ## Machine-global skills
 
 The three skills (`cross-review`, `fanout`, `investigate`) are additionally
